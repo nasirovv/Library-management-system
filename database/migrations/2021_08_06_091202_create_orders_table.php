@@ -23,7 +23,7 @@ class CreateOrdersTable extends Migration
             $table->date('givenDate');
             $table->date('mustReturnDate');
             $table->date('returnedDate');
-            $table->string('status');
+            $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
         });
     }
