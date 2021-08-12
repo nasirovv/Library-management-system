@@ -46,6 +46,16 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'user' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+
+        'librarian' => [
+            'driver' => 'sanctum',
+            'provider' => 'librarians',
+        ],
     ],
 
     /*
@@ -71,10 +81,11 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'librarians' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Librarian::class,
+        ],
+
     ],
 
     /*
@@ -95,6 +106,13 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'librarians' => [
+            'provider' => 'librarians',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
