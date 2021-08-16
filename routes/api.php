@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LibrarianLoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\UserLoginController;
@@ -21,6 +22,7 @@ Route::prefix('auth')->group(function (){
     Route::post('user/register', [RegisterController::class, 'register']);
     Route::post('user/login', [UserLoginController::class, 'login']);
     Route::post('librarian/login', [LibrarianLoginController::class, 'login']);
+    Route::post('admin/login', [AdminLoginController::class, 'login']);
 });
 
 
@@ -34,6 +36,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
         Route::get('/', [LibrarianLoginController::class, 'librarian']);
         Route::post('logout', [LibrarianLoginController::class, 'logout']);
+    });
+
+    Route::middleware('auth:admin')->prefix('admin')->group(function () {
+        Route::post('logout', [AdminLoginController::class, 'logout']);
     });
 
 });

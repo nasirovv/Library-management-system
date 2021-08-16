@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'api',
+        'guard' => 'web',
         'passwords' => 'users',
     ],
 
@@ -56,6 +56,11 @@ return [
             'driver' => 'sanctum',
             'provider' => 'librarians',
         ],
+
+        'admin' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
+        ],
     ],
 
     /*
@@ -86,6 +91,11 @@ return [
             'model' => App\Models\Librarian::class,
         ],
 
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+
     ],
 
     /*
@@ -113,6 +123,13 @@ return [
 
         'librarians' => [
             'provider' => 'librarians',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admins' => [
+            'provider' => 'admins',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
