@@ -10,6 +10,13 @@ class Librarian extends Model
 {
     use HasApiTokens, HasFactory;
 
+    protected $fillable = [
+        'id',
+        'name',
+        'username',
+        'password',
+    ];
+
     public function orders(){
         return $this->hasMany(Order::class);
     }
