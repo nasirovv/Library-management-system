@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\LibrarianController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LibrarianLoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -28,6 +29,7 @@ Route::prefix('auth')->group(function (){
 
 Route::middleware('auth:sanctum')->group(function () {
 
+    // Routes for auth
     Route::middleware('auth:user')->prefix('user')->group(function () {
         Route::get('/', [UserLoginController::class, 'user']);
         Route::post('logout', [UserLoginController::class, 'logout']);
@@ -42,6 +44,25 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AdminLoginController::class, 'logout']);
     });
 
+
+    // Routes
+    Route::middleware('auth:user')->prefix('user')->group(function () {
+
+    });
+
+    Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
+
+    });
+
+    Route::middleware('auth:admin')->group(function () {
+        Route::apiResources([
+            'librarians' => LibrarianController::class,
+        ]);
+    });
+
 });
 
 
+Route::get('aaa', function (){
+    return url('/');
+});

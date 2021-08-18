@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Librarian;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class LibrarianLoginController extends Controller
@@ -35,6 +34,7 @@ class LibrarianLoginController extends Controller
 
     public function librarian()
     {
+        // TODO fix auth()->id() not working
         return response()->json(auth()->guard('librarian')->user()->id, 200);
     }
 

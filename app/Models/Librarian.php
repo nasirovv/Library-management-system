@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Facades\Image;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
@@ -15,6 +16,7 @@ class Librarian extends Model
         'name',
         'username',
         'password',
+        'image'
     ];
 
     public function orders(){
@@ -23,6 +25,12 @@ class Librarian extends Model
 
     public function blockMessages(){
         return $this->hasMany(BlockMessage::class);
+    }
+
+    public function getImageAttribute()
+    {
+        $default = url('/') . '/images/librarian-default.jpg';
+        return Image::get('librarians', $this->attributes['id']) ?? $default;
     }
 
 }
