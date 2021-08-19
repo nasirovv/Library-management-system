@@ -23,11 +23,22 @@ class LibrarianRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|string',
-            'username' => 'required|string|unique:librarians,username',
-            'password' => 'required|min:6',
-            'image' => 'nullable|mimes:jpeg,jpg,png',
-        ];
+        if($this->getMethod() == 'POST'){
+            return [
+                'name' => 'required|string',
+                'username' => 'required|string|unique:librarians,username',
+                'password' => 'required|min:6',
+                'image' => 'nullable|mimes:jpeg,jpg,png',
+            ];
+        }
+
+        if($this->getMethod() == 'PATCH'){
+            return [
+                'name' => 'string',
+                'username' => 'string|unique:librarians,username',
+                'image' => 'nullable|mimes:jpeg,jpg,png',
+            ];
+        }
+
     }
 }

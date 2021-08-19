@@ -34,9 +34,21 @@ class LibrarianController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(LibrarianRequest $request, $id)
     {
-        //
+        $librarian = Librarian::find($id);
+        if (!$librarian){
+            return response()->json('Librarian not found', 404);
+        }
+        if($request->password){
+            return response()->json('Admin cannot edit librarians password', 401);
+        }
+        $librarian->update($request->all());
+        if ($request->hasFile('image')){
+            Image::update($request->file('image'), 'librarians', $librarian->id);
+        }
+
+        return response()->json('Successfully updated', 200);
     }
 
     public function destroy($id)
