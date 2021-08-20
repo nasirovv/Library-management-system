@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LibrarianRequest;
 use App\Http\Resources\Admin\LibrarianResource;
 use App\Models\Librarian;
-use Illuminate\Http\Request;
 
 class LibrarianController extends Controller
 {
@@ -53,6 +52,11 @@ class LibrarianController extends Controller
 
     public function destroy($id)
     {
-        //
+        $librarian = Librarian::find($id);
+        if (!$librarian){
+            return response()->json('Librarian not found', 404);
+        }
+        $librarian->delete();
+        return response()->json('Librarian successfully deleted', 200);
     }
 }

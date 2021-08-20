@@ -23,7 +23,7 @@ class LibrarianRequest extends FormRequest
      */
     public function rules()
     {
-        if($this->getMethod() == 'POST'){
+        if($this->routeIs('librarians.store')){
             return [
                 'name' => 'required|string',
                 'username' => 'required|string|unique:librarians,username',
@@ -32,7 +32,7 @@ class LibrarianRequest extends FormRequest
             ];
         }
 
-        if($this->getMethod() == 'PATCH'){
+        if($this->except('password')){
             return [
                 'name' => 'string',
                 'username' => 'string|unique:librarians,username',
