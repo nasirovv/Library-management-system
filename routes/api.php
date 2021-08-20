@@ -54,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
 
-    Route::middleware('auth:admin')->group(function () {
+    Route::middleware('auth:admin')->prefix('admin')->group(function () {
         Route::apiResource('librarians', LibrarianController::class)->except('update');
         Route::post('librarians/{id}', [LibrarianController::class, 'update']);
 

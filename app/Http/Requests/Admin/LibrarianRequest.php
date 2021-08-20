@@ -25,7 +25,7 @@ class LibrarianRequest extends FormRequest
     {
         if($this->routeIs('librarians.store')){
             return [
-                'name' => 'required|string',
+                'fullName' => 'required|string',
                 'username' => 'required|string|unique:librarians,username',
                 'password' => 'required|min:6',
                 'image' => 'nullable|mimes:jpeg,jpg,png',
@@ -34,7 +34,7 @@ class LibrarianRequest extends FormRequest
 
         if($this->except('password')){
             return [
-                'name' => 'string',
+                'fullName' => 'string',
                 'username' => 'string|unique:librarians,username',
                 'image' => 'nullable|mimes:jpeg,jpg,png',
             ];

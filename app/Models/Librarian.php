@@ -13,7 +13,7 @@ class Librarian extends Model
 
     protected $fillable = [
         'id',
-        'name',
+        'fullName',
         'username',
         'password',
         'image'

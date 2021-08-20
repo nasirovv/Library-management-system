@@ -16,9 +16,8 @@ class LibrarianResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'fullName' => $this->fullName,
             'username' => $this->username,
-            'password' => $this->password,
             'image' => $this->image,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

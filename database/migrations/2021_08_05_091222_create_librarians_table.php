@@ -15,7 +15,7 @@ class CreateLibrariansTable extends Migration
     {
         Schema::create('librarians', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('fullName');
             $table->string('username')->unique();
             $table->string('password');
             $table->string('image')->nullable();
