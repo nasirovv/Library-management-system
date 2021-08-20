@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LibrarianController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LibrarianLoginController;
@@ -57,15 +58,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
         Route::apiResource('librarians', LibrarianController::class)->except('update');
         Route::post('librarians/{id}', [LibrarianController::class, 'update']);
-
+        Route::apiResource('categories', CategoryController::class)->except('index');
 
 
 
 
         Route::apiResources([
+
         ]);
     });
 
+
+    Route::get('categories', [CategoryController::class, 'index']);
 });
 
 
