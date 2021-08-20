@@ -24,4 +24,29 @@ class RegisterController extends Controller
         ], 201);
     }
 
+    public function token(){
+        if (auth()->guard('librarian')->user()){
+            return response()->json([
+                'verified' => true,
+                'role' => 'librarian'
+            ]);
+        }
+        if (auth()->guard('admin')->user()){
+            return response()->json([
+                'verified' => true,
+                'role' => 'admin'
+            ]);
+        }
+        if (auth()->guard('user')->user()){
+            return response()->json([
+                'verified' => true,
+                'role' => 'user'
+            ]);
+        }
+
+        return response()->json([
+            'verified' => false,
+        ]);
+    }
+
 }
