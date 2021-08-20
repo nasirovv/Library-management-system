@@ -71,7 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('categories', [CategoryController::class, 'index']);
 
-    Route::post('verifyToken', [RegisterController::class, 'token']);
+    Route::get('verifyToken', [RegisterController::class, 'token']);
 });
 
 
