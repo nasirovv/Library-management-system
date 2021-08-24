@@ -46,6 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
+
+
     // Routes
     Route::middleware('auth:user')->prefix('user')->group(function () {
 
@@ -61,20 +63,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('categories', CategoryController::class)->except('index');
 
 
-
-
         Route::apiResources([
 
         ]);
     });
 
-
+    // For all guards
     Route::get('categories', [CategoryController::class, 'index']);
 
     Route::get('verifyToken', [RegisterController::class, 'token']);
 });
 
 
-Route::get('aaa', function (){
-    return url('/');
-});
