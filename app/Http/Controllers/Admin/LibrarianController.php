@@ -27,15 +27,14 @@ class LibrarianController extends Controller
         return response()->json('Successfully added', 201);
     }
 
-    public function show($id)
+    public function show(Librarian $librarian)
     {
-        //
+        return response()->json(new LibrarianResource($librarian), 200);
     }
 
 
-    public function update(LibrarianRequest $request, $id)
+    public function update(LibrarianRequest $request, Librarian $librarian)
     {
-        $librarian = Librarian::find($id);
         if (!$librarian){
             return response()->json('Librarian not found', 404);
         }
@@ -50,9 +49,8 @@ class LibrarianController extends Controller
         return response()->json('Successfully updated', 200);
     }
 
-    public function destroy($id)
+    public function destroy(Librarian $librarian)
     {
-        $librarian = Librarian::find($id);
         if (!$librarian){
             return response()->json('Librarian not found', 404);
         }
