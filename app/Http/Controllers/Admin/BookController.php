@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BookRequest;
 use App\Http\Resources\Admin\BookResource;
 use App\Models\Book;
-use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -65,8 +64,12 @@ class BookController extends Controller
         return response()->json('Successfully updated', 200);
     }
 
-    public function destroy($id)
+    public function destroy(Book $book)
     {
-        //
+        if (!$book){
+            return response()->json('Book not found', 404);
+        }
+        $book->delete();
+        return response()->json('Successfully deleted', 200);
     }
 }
