@@ -23,15 +23,19 @@ class BookRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|string',
             'author' => 'required|string',
             'ISBN' => 'required|string',
             'description' => 'required|string',
             'originalCount' => 'required|numeric',
-            'count' => 'required|numeric',
             'image' => 'nullable|mimes:jpeg,jpg,png',
             'publishedDate' => 'required',
-        ];
+            ];
+
+        if($this->routeIs('books.store')) {
+            $rules['ISBN'] = 'required|string|unique:books,ISBN';
+        }
+        return $rules;
     }
 }

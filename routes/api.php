@@ -59,10 +59,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
+        // Librarians crud
         Route::apiResource('librarians', LibrarianController::class)->except('update');
         Route::post('librarians/{id}', [LibrarianController::class, 'update']);
+        // Categories crud
         Route::apiResource('categories', CategoryController::class)->except('index');
-        Route::apiResource('books', BookController::class);
+        // Books crud
+        Route::apiResource('books', BookController::class)->except('update');
+        Route::post('books/{id}', [BookController::class, 'update']);
 
 
         Route::apiResources([

@@ -34,8 +34,8 @@ class LibrarianRequest extends FormRequest
 
         if($this->except('password')){
             return [
-                'fullName' => 'string',
-                'username' => 'string|unique:librarians,username',
+                'fullName' => 'required|string',
+                'username' => 'required|string',
                 'image' => 'nullable|mimes:jpeg,jpg,png',
             ];
         }
