@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
+        Route::get('/', [AdminLoginController::class, 'admin']);
         Route::post('logout', [AdminLoginController::class, 'logout']);
     });
 
@@ -59,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
+        Route::put('edit-password', [AdminLoginController::class, 'editPassword']);
         // Librarians crud
         Route::apiResource('librarians', LibrarianController::class)->except('update');
         Route::post('librarians/{id}', [LibrarianController::class, 'update']);
