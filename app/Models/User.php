@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Facades\Image;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,10 +19,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'fullName',
         'username',
         'email',
         'password',
+        'active'
     ];
 
     /**
@@ -54,5 +56,11 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function getImageAttribute()
+    {
+        $default = url('/') . '/images/user-default.jpg';
+        return Image::get('users', $this->attributes['id']) ?? $default;
     }
 }

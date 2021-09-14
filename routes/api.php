@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LibrarianController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LibrarianLoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -61,6 +62,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
         Route::put('edit-password', [AdminLoginController::class, 'editPassword']);
+        Route::put('edit', [AdminLoginController::class, 'edit']);
+
+
+        // Users crud
+        Route::get('users', [UserController::class, 'index']);
         // Librarians crud
         Route::apiResource('librarians', LibrarianController::class)->except('update');
         Route::post('librarians/{id}', [LibrarianController::class, 'update']);

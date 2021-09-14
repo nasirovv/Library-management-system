@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Requests\Admin\EditPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Admin;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AdminLoginController extends Controller
@@ -35,7 +35,16 @@ class AdminLoginController extends Controller
     }
 
     public function admin(){
-        return response()->json(auth()->guard('admin')->user()->username, 200);
+        return response()->json([
+            'username' => auth()->guard('admin')->user()->username
+        ], 200);
+    }
+
+    public function edit(AdminRequest $request){
+        auth()->user()->update([
+            'username' => $request->username
+        ]);
+        return response()->json('Username updated successfully', 200);
     }
 
     public function editPassword(EditPasswordRequest $request){
