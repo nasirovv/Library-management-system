@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\EditPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Admin;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AdminLoginController extends Controller
@@ -32,4 +34,20 @@ class AdminLoginController extends Controller
         ], 200);
     }
 
+    public function admin(){
+        return response()->json(auth()->guard('admin')->user()->username, 200);
+    }
+
+    public function editPassword(EditPasswordRequest $request){
+        if (!(Hash::check($request->oldPassword, auth()->user()->password))){
+            return response()->json('Old Password incorrect', 401);
+        }
+        if (!($request->newPassword === $request->confirmPassword)){
+            return response()->json('Password Confirmation does not match', 401);
+        }
+        auth()->user()->update([
+            'password' => $request->newPassword
+        ]);
+        return response()->json('Password updated successfully', 200);
+    }
 }
