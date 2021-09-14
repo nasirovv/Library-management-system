@@ -33,4 +33,8 @@ class Librarian extends Model
         return Image::get('librarians', $this->attributes['id']) ?? $default;
     }
 
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
 }
