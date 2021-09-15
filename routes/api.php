@@ -61,8 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
-        Route::put('edit-password', [AdminLoginController::class, 'editPassword']);
-        Route::put('edit', [AdminLoginController::class, 'edit']);
+        Route::patch('edit', [AdminLoginController::class, 'edit']);
 
 
         // Users crud

@@ -41,22 +41,25 @@ class AdminLoginController extends Controller
     }
 
     public function edit(AdminRequest $request){
-        auth()->user()->update([
-            'username' => $request->username
-        ]);
-        return response()->json('Username updated successfully', 200);
+        if ($request->has('oldPassword') && $request->has('newPassword') && $request->has('confirmPassword'))
+        {
+            if (!(Hash::check($request->oldPassword, auth()->user()->password))){
+                return response()->json('Old Password incorrect', 401);
+            }
+            if (!($request->newPassword === $request->confirmPassword)){
+                return response()->json('Password Confirmation does not match', 401);
+            }
+        }
+        if ($request->has('newPassword')){
+            auth()->user()->password = $request->newPassword;
+        }
+        if ($request->has('username')){
+            auth()->user()->username = $request->username;
+        }
+        auth()->user()->save();
+
+        return response()->json('Updated successfully', 200);
+
     }
 
-    public function editPassword(EditPasswordRequest $request){
-        if (!(Hash::check($request->oldPassword, auth()->user()->password))){
-            return response()->json('Old Password incorrect', 401);
-        }
-        if (!($request->newPassword === $request->confirmPassword)){
-            return response()->json('Password Confirmation does not match', 401);
-        }
-        auth()->user()->update([
-            'password' => $request->newPassword
-        ]);
-        return response()->json('Password updated successfully', 200);
-    }
 }

@@ -23,8 +23,15 @@ class AdminRequest extends FormRequest
      */
     public function rules()
     {
+        if($this->has('newPassword')){
+            return [
+                'oldPassword' => 'required|min:6',
+                'confirmPassword' => 'required|min:6',
+                'username' => 'string|nullable'
+            ];
+        }
         return [
-            'username' => 'required|string'
+            'username' => 'string|nullable'
         ];
     }
 }
