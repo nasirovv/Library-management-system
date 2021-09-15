@@ -60,9 +60,9 @@ class ImageService
     {
         $images = glob($path . '/*', GLOB_BRACE);
 
-//        if (empty($images)) {
-//            throw new Exception('Directory is empty!');
-//        }
+        if (empty($images)) {
+            throw new Exception('Directory is empty!');
+        }
 
         foreach ($images as $image) {
             if (is_file($image)) {
