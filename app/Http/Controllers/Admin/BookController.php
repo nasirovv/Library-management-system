@@ -24,8 +24,8 @@ class BookController extends Controller
             'author' => $request->author,
             'ISBN' => $request->ISBN,
             'description' => $request->description,
-            'originalCount' => $request->originalCount,
-            'count' => $request->originalCount,
+            'originalCount' => $request->count,
+            'count' => $request->count,
             'image' => $request->image,
             'publishedYear' => $request->publishedYear,
         ]);
@@ -52,8 +52,8 @@ class BookController extends Controller
             'author' => $request->author,
             'ISBN' => $request->ISBN,
             'description' => $request->description,
-            'originalCount' => $request->originalCount,
-            'count' => $request->originalCount,
+            'originalCount' => $request->count,
+            'count' => $request->count,
             'image' => $request->image,
             'publishedYear' => $request->publishedYear,
         ]);
