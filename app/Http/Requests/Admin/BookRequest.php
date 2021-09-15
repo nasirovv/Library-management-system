@@ -30,7 +30,7 @@ class BookRequest extends FormRequest
             'description' => 'required|string',
             'originalCount' => 'required|numeric',
             'image' => 'nullable|mimes:jpeg,jpg,png',
-            'publishedDate' => 'required',
+            'publishedYear' => 'required',
             ];
 
         if($this->routeIs('books.store')) {

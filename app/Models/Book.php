@@ -18,7 +18,7 @@ class Book extends Model
         'originalCount',
         'count',
         'image',
-        'publishedDate'
+        'publishedYear'
     ];
 
     public function categories(){

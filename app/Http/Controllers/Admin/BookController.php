@@ -27,7 +27,7 @@ class BookController extends Controller
             'originalCount' => $request->originalCount,
             'count' => $request->originalCount,
             'image' => $request->image,
-            'publishedDate' => $request->publishedDate,
+            'publishedYear' => $request->publishedYear,
         ]);
         if($request->hasFile('image')){
             Image::upload($request->file('image'), 'books', $book->id);
@@ -55,7 +55,7 @@ class BookController extends Controller
             'originalCount' => $request->originalCount,
             'count' => $request->originalCount,
             'image' => $request->image,
-            'publishedDate' => $request->publishedDate,
+            'publishedYear' => $request->publishedYear,
         ]);
         if ($request->hasFile('image')){
             Image::update($request->file('image'), 'books', $book->id);

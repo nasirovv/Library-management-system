@@ -22,7 +22,7 @@ class CreateBooksTable extends Migration
             $table->integer('originalCount');
             $table->integer('count');
             $table->string('image')->nullable();
-            $table->date('publishedDate');
+            $table->date('publishedYear');
             $table->timestamps();
         });
     }
