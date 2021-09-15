@@ -5,45 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Facades\Image;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BookRequest;
+use App\Http\Services\SearchService;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+    protected $service;
+
+    public function __construct(SearchService $service)
+    {
+        $this->service = $service;
+    }
+
     public function index(Request $request)
     {
-        $text = strtolower($request->input('searchText'));
-
-        $books = Book::select('id', 'name', 'author', 'ISBN', 'description', 'originalCount', 'count', 'image', 'publishedYear', 'created_at')
-            ->with('categories:id,name')
-            ->when($request->input('filter') && $request->input('filter') === 'category', function ($query) use ($request, $text){
-                    return $query->whereHas('categories', function ($q) use ($text){
-                        return $q->where('name', 'LIKE', "%$text%");
-                    });
-            })
-            ->when($request->input('searchBy'), function ($query) use ($request, $text){
-                if ($request->input('searchBy') === 'author'){
-                    return $query->where('author', 'LIKE', "%$text%");
-                }
-                if ($request->input('searchBy') === 'ISBN'){
-                    return $query->where('ISBN', 'LIKE', "%$text%");
-                }
-                return $query->where('name', 'LIKE', "%$text%");
-            })
-            ->when($request->input('fromYear'), function ($query) use ($request){
-                return $query->where('publishedYear', '>=', $request->input('fromYear'));
-            })
-            ->when($request->input('toYear'), function ($query) use ($request){
-                return $query->where('publishedYear', '<=', $request->input('toYear'));
-            })
-            ->when($request->input('sort'), function ($query) use ($request){
-                if($request->input('sort') === 'alphabet'){
-                    return $query->orderBy('name');
-                }
-                return $query->orderByDesc('publishedYear');
-            })
-            ->simplePaginate(10);
-        return response()->json($books, 200);
+        return response()->json($this->service->bookSearch($request));
     }
 
     public function store(BookRequest $request)
@@ -65,10 +42,6 @@ class BookController extends Controller
         return response()->json('Successfully added', 201);
     }
 
-    public function show($id)
-    {
-        //
-    }
 
     public function update(BookRequest $request, $id)
     {

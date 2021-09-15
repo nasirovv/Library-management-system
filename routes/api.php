@@ -57,14 +57,15 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
-
+        // TODO duplicate route need to fix
+        Route::get('users', [UserController::class, 'index']);
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
         Route::patch('edit', [AdminLoginController::class, 'edit']);
 
-
         // Users crud
+        // TODO duplicate route need to fix
         Route::get('users', [UserController::class, 'index']);
         // Librarians crud
         Route::apiResource('librarians', LibrarianController::class)->except('update');
