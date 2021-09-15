@@ -33,8 +33,9 @@ class LibrarianController extends Controller
     }
 
 
-    public function update(LibrarianRequest $request, Librarian $librarian)
+    public function update(LibrarianRequest $request, $id)
     {
+        $librarian = Librarian::find($id);
         if (!$librarian){
             return response()->json('Librarian not found', 404);
         }
