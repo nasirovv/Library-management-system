@@ -49,7 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
-
+    // TODO The routes at the top are awesome
+    // TODO The routes at the bottom need fix
 
     // Routes
     Route::middleware('auth:user')->prefix('user')->group(function () {
@@ -57,16 +58,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
-        // TODO duplicate route need to fix
-        Route::get('users', [UserController::class, 'index']);
+
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
         Route::patch('/', [AdminLoginController::class, 'edit']);
 
         // Users crud
-        // TODO duplicate route need to fix
-        Route::get('users', [UserController::class, 'index']);
+        Route::delete('users/{id}', [UserController::class, 'delete']);
         // Librarians crud
         Route::apiResource('librarians', LibrarianController::class)->except('update');
         Route::post('librarians/{id}', [LibrarianController::class, 'update']);
@@ -76,10 +75,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('books', BookController::class)->except('update');
         Route::post('books/{id}', [BookController::class, 'update']);
 
+    });
 
-        Route::apiResources([
-
-        ]);
+    Route::middleware(['auth:admin,librarian'])->group(function () {
+        Route::get('users', [UserController::class, 'index']);
     });
 
     // For all guards
