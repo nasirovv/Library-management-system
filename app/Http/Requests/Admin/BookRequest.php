@@ -28,7 +28,7 @@ class BookRequest extends FormRequest
             'author' => 'required|string',
             'ISBN' => 'required|string',
             'description' => 'required|string',
-            'count' => 'required|numeric',
+            'count' => 'required|string',
             'image' => 'nullable|mimes:jpeg,jpg,png',
             'publishedYear' => 'required',
             ];

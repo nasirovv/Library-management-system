@@ -62,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
-        Route::patch('edit', [AdminLoginController::class, 'edit']);
+        Route::patch('/', [AdminLoginController::class, 'edit']);
 
         // Users crud
         // TODO duplicate route need to fix
