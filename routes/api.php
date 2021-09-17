@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LibrarianLoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Librarian\UserController as LibrarianUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,7 +59,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
-
+        Route::post('users/block/{id}', [LibrarianUserController::class, 'block']);
+        Route::post('users/unblock/{id}', [LibrarianUserController::class, 'unblock']);
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
@@ -79,6 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware(['auth:admin,librarian'])->group(function () {
         Route::get('users', [UserController::class, 'index']);
+        Route::get('users/{id}', [UserController::class, 'show']);
+        Route::get('books/{id}', [BookController::class, 'show']);
     });
 
     // For all guards

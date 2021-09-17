@@ -9,6 +9,12 @@ class BlockMessage extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'librarian_id',
+        'message'
+    ];
+
     public function librarian(){
         return $this->belongsTo(Librarian::class);
     }

@@ -42,6 +42,14 @@ class BookController extends Controller
         return response()->json('Successfully added', 201);
     }
 
+    public function show($id){
+        $book = Book::where('id', $id)
+            ->select('id', 'name', 'image', 'author', 'ISBN', 'publishedYear', 'description', 'count', 'originalCount')
+            ->with('categories:id,name')
+            ->firstOrFail();
+        return response()->json($book, 200);
+    }
+
 
     public function update(BookRequest $request, $id)
     {
