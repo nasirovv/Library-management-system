@@ -9,6 +9,11 @@ class Comment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'message',
+        'order_id'
+    ];
+
     public function order(){
         return $this->belongsTo(Order::class);
     }
