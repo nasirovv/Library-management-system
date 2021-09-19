@@ -77,7 +77,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Categories crud
         Route::apiResource('categories', CategoryController::class)->except('index');
         // Books crud
-        Route::apiResource('books', BookController::class)->except('update');
+        Route::apiResource('books', BookController::class)->except(['index', 'update']);
         Route::post('books/{id}', [BookController::class, 'update']);
 
     });
@@ -89,9 +89,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     // For all guards
-    Route::get('categories', [CategoryController::class, 'index']);
-
     Route::get('verifyToken', [RegisterController::class, 'token']);
 });
 
 
+Route::get('categories', [CategoryController::class, 'index']);
+Route::get('books', [BookController::class, 'index']);
