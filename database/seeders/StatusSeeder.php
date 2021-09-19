@@ -16,12 +16,28 @@ class StatusSeeder extends Seeder
     {
         DB::table('statuses')->insert([
             'id' => 1,
-            'message' => 'aaaaa',
+            'message' => 'waiting',
         ]);
 
         DB::table('statuses')->insert([
             'id' => 2,
-            'message' => 'bbbbb',
+            'message' => 'denied',
         ]);
+
+        DB::table('statuses')->insert([
+            'id' => 3,
+            'message' => 'onProcess',
+        ]);
+
+        DB::table('statuses')->insert([
+            'id' => 4,
+            'message' => 'finished',
+        ]);
+
+        DB::table('statuses')->insert([
+            'id' => 5,
+            'message' => 'inDebt',
+        ]);
+
     }
 }

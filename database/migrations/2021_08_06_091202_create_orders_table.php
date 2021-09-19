@@ -17,12 +17,12 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('librarian_id')->constrained('librarians')->onDelete('cascade');
-            $table->date('wantedDate');
-            $table->date('wantedDuration');
-            $table->date('givenDate');
-            $table->date('mustReturnDate');
-            $table->date('returnedDate');
+            $table->foreignId('librarian_id')->nullable()->constrained('librarians')->onDelete('cascade');
+            $table->date('wantedDate')->nullable();
+            $table->integer('wantedDuration')->nullable();
+            $table->date('givenDate')->nullable();
+            $table->date('mustReturnDate')->nullable();
+            $table->date('returnedDate')->nullable();
             $table->foreignId('status_id')->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
         });

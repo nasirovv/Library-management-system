@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Librarian\UserController as LibrarianUserController;
+use App\Http\Controllers\User\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,12 +56,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Routes
     Route::middleware('auth:user')->prefix('user')->group(function () {
-
+        Route::post('order', [OrderController::class, 'order']);
     });
 
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
         Route::post('users/block/{id}', [LibrarianUserController::class, 'block']);
         Route::post('users/unblock/{id}', [LibrarianUserController::class, 'unblock']);
+        Route::post('order/accept/{id}', [OrderController::class, 'acceptOrder']);
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {

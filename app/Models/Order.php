@@ -9,6 +9,18 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'book_id',
+        'user_id',
+        'wantedDate',
+        'wantedDuration',
+        'status_id',
+        'librarian_id',
+        'givenDate',
+        'mustReturnDate',
+        'returnedDate'
+    ];
+
     public function book(){
         return $this->belongsTo(Book::class);
     }
