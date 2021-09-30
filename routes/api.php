@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LibrarianController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LibrarianLoginController;
@@ -69,6 +70,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
         Route::patch('/', [AdminLoginController::class, 'edit']);
+
+        Route::get('orders', [AdminOrderController::class, 'index']);
 
         // Users crud
         Route::delete('users/{id}', [UserController::class, 'delete']);
