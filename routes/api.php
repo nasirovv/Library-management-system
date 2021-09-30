@@ -66,6 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('order/accept/{id}', [OrderController::class, 'acceptOrder']);
         Route::post('order/reject/{id}', [OrderController::class, 'rejectOrder']);
         Route::get('applications', [OrderController::class, 'applications']);
+        Route::get('orders', [OrderController::class, 'orders']);
+
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {

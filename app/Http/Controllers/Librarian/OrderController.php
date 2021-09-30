@@ -8,12 +8,14 @@ use App\Models\Book;
 use App\Models\Comment;
 use App\Models\Order;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
 
-    public function acceptOrder($id){
+    public function acceptOrder($id): JsonResponse
+    {
         $order = Order::findOrFail($id);
         if(!($order->status_id === 1)){
             return response()->json('You cannot accept this order', 400);
@@ -30,7 +32,8 @@ class OrderController extends Controller
         return response()->json('Order accepted successfully', 200);
     }
 
-    public function rejectOrder(Request $request, $id){
+    public function rejectOrder(Request $request, $id): JsonResponse
+    {
         $request->validate([
             'message' => 'required|string'
         ]);
@@ -50,10 +53,18 @@ class OrderController extends Controller
         return response()->json('Order rejected successfully', 200);
     }
 
-    public function applications(Request $request){
+    public function applications(Request $request): JsonResponse
+    {
         $applications = (new SearchService())->applicationSearch($request);
 
         return response()->json($applications, 200);
+    }
+
+    public function orders(Request $request): JsonResponse
+    {
+        $orders = (new SearchService())->orderSearchForLibrarian($request);
+
+        return response()->json($orders, 200);
     }
 
 }

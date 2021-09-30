@@ -5,11 +5,12 @@ namespace App\Http\Services;
 use App\Models\Book;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\Request;
 
 class SearchService
 {
-    public function bookSearch(Request $request)
+    public function bookSearch(Request $request): Paginator
     {
         $text = strtolower($request->input('searchText'));
 
@@ -45,8 +46,10 @@ class SearchService
             ->simplePaginate(10);
     }
 
-    public function userSearch(Request $request){
-        return User::select('id', 'fullName', 'email', 'active', 'image')
+    public function userSearch(Request $request): Paginator
+    {
+        return User::query()
+            ->select('id', 'fullName', 'email', 'active', 'image')
             ->when($request->input('filter') && $request->input('filter') != 'all', function ($query) use ($request){
                 if($request->input('filter') === 'active'){
                     return $query->where('active', true);
@@ -65,10 +68,12 @@ class SearchService
             ->simplePaginate(15);
     }
 
-    public function applicationSearch(Request $request){
+    public function applicationSearch(Request $request): Paginator
+    {
         $text = strtolower($request->input('searchText'));
 
-        return Order::where('status_id', 1)
+        return Order::query()
+            ->where('status_id', 1)
             ->when($request->input('searchBy'), function ($query) use ($request, $text){
                 if($request->input('searchBy') === 'user'){
                     return $query->whereHas('user', function ($q) use ($request, $text){
@@ -85,7 +90,8 @@ class SearchService
             ->simplePaginate();
     }
 
-    public function orderSearchForAdmin(Request $request){
+    public function orderSearchForAdmin(Request $request): Paginator
+    {
         $text = strtolower($request->input('searchText'));
 
         return Order::query()
@@ -114,6 +120,34 @@ class SearchService
             ->with('user:id,fullName')
             ->with('book:id,name')
             ->with('librarian:id,fullName')
+            ->simplePaginate();
+    }
+
+    public function orderSearchForLibrarian(Request $request): Paginator
+    {
+        $text = strtolower($request->input('searchText'));
+
+        return Order::query()
+            ->where('librarian_id', auth()->guard('librarian')->user()->id)
+            ->when($request->input('filter') === 'status', function ($query) use ($text){
+                return $query->whereHas('status', function ($q) use($text){
+                    return $q->where('message', 'LIKE', "%$text%");
+                });
+            })
+            ->when($request->input('searchBy'), function ($query) use ($request, $text){
+                if($request->input('searchBy') === 'user'){
+                    return $query->whereHas('user', function ($q) use ($request, $text){
+                        return $q->where('fullName', 'LIKE', "%$text%");
+                    });
+                }
+                return $query->whereHas('book', function ($q) use ($request, $text){
+                    return $q->where('name', 'LIKE', "%$text%");
+                });
+            })
+            ->select('id', 'book_id', 'user_id', 'wantedDate', 'wantedDuration',
+                'status_id', 'givenDate', 'mustReturnDate', 'returnedDate')
+            ->with('user:id,fullName')
+            ->with('book:id,name')
             ->simplePaginate();
     }
 
