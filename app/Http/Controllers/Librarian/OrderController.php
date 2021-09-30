@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Front;
+namespace App\Http\Controllers\Librarian;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Front\OrderRequest;
 use App\Models\Book;
 use App\Models\Comment;
 use App\Models\Order;
@@ -12,21 +11,6 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-
-    public function order(OrderRequest $request){
-        if(Book::firstWhere('id', $request->bookId)->count <= 0){
-            return response()->json('The books is over', 404);
-        }
-        Order::create([
-            'book_id' => $request->bookId,
-            'user_id' => auth()->id(),
-            'wantedDate' => $request->wantedDate,
-            'wantedDuration' => $request->wantedDuration,
-            'status_id' => 1,
-        ]);
-
-        return response()->json('Ordered successfully', 200);
-    }
 
     public function acceptOrder($id){
         $order = Order::findOrFail($id);
@@ -63,6 +47,29 @@ class OrderController extends Controller
         ]);
 
         return response()->json('Order rejected successfully', 200);
+    }
+
+    public function applications(Request $request){
+        $text = strtolower($request->input('searchText'));
+
+        $applications = Order::where('status_id', 1)
+            ->when($request->input('searchBy'), function ($query) use ($request, $text){
+                if($request->input('searchBy') === 'user'){
+
+                    return $query->whereHas('user', function ($q) use ($request, $text){
+                        return $q->where('fullName', $text);
+                    });
+                }
+                return $query->whereHas('book', function ($q) use ($request, $text){
+                    return $q->where('name', $text);
+                });
+            })
+            ->select('id', 'wantedDate', 'wantedDuration', 'user_id', 'book_id')
+            ->with('user:id,fullName')
+            ->with('book:id,name')
+            ->toSql();
+
+        return response()->json($applications, 200);
     }
 
 }

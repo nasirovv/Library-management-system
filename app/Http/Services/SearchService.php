@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SearchService
@@ -42,5 +43,27 @@ class SearchService
             })
             ->simplePaginate(10);
     }
+
+    public function userSearch(Request $request){
+        return User::select('id', 'fullName', 'email', 'active', 'image')
+            ->when($request->input('filter') && $request->input('filter') != 'all', function ($query) use ($request){
+                if($request->input('filter') === 'active'){
+                    return $query->where('active', true);
+                }
+                else{
+                    return $query->where('active', false);
+                }
+            })
+            ->when($request->input('searchBy'), function ($query) use ($request){
+                $text = strtolower($request->input('searchText'));
+                if($request->input('searchBy') === 'email'){
+                    return $query->where('email', 'LIKE', "%$text%");
+                }
+                return $query->where('fullName', 'LIKE', "%$text%");
+            })
+            ->simplePaginate(15);
+    }
+
+
 }
 

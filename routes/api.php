@@ -8,9 +8,9 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\LibrarianLoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\UserLoginController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Front\UserController as FrontUserController;
-use App\Http\Controllers\Front\OrderController;
+use App\Http\Controllers\Librarian\UserController as LibrarianUserController;
+use App\Http\Controllers\Librarian\OrderController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,14 +56,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Routes
     Route::middleware('auth:user')->prefix('user')->group(function () {
-        Route::post('order', [OrderController::class, 'order']);
+        Route::post('order', [UserOrderController::class, 'order']);
     });
 
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
-        Route::post('users/block/{id}', [FrontUserController::class, 'block']);
-        Route::post('users/unblock/{id}', [FrontUserController::class, 'unblock']);
+        Route::post('users/block/{id}', [LibrarianUserController::class, 'block']);
+        Route::post('users/unblock/{id}', [LibrarianUserController::class, 'unblock']);
         Route::post('order/accept/{id}', [OrderController::class, 'acceptOrder']);
         Route::post('order/reject/{id}', [OrderController::class, 'rejectOrder']);
+        Route::get('applications', [OrderController::class, 'applications']);
     });
 
     Route::middleware('auth:admin')->prefix('admin')->group(function () {
