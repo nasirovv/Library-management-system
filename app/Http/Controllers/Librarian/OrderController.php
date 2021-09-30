@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Librarian;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\SearchService;
 use App\Models\Book;
 use App\Models\Comment;
 use App\Models\Order;
@@ -50,24 +51,7 @@ class OrderController extends Controller
     }
 
     public function applications(Request $request){
-        $text = strtolower($request->input('searchText'));
-
-        $applications = Order::where('status_id', 1)
-            ->when($request->input('searchBy'), function ($query) use ($request, $text){
-                if($request->input('searchBy') === 'user'){
-
-                    return $query->whereHas('user', function ($q) use ($request, $text){
-                        return $q->where('fullName', $text);
-                    });
-                }
-                return $query->whereHas('book', function ($q) use ($request, $text){
-                    return $q->where('name', $text);
-                });
-            })
-            ->select('id', 'wantedDate', 'wantedDuration', 'user_id', 'book_id')
-            ->with('user:id,fullName')
-            ->with('book:id,name')
-            ->toSql();
+        $applications = (new SearchService())->applicationSearch($request);
 
         return response()->json($applications, 200);
     }

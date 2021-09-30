@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\Book;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -64,6 +65,26 @@ class SearchService
             ->simplePaginate(15);
     }
 
+    public function applicationSearch(Request $request){
+        $text = strtolower($request->input('searchText'));
+
+        return Order::where('status_id', 1)
+            ->when($request->input('searchBy'), function ($query) use ($request, $text){
+                if($request->input('searchBy') === 'user'){
+
+                    return $query->whereHas('user', function ($q) use ($request, $text){
+                        return $q->where('fullName', 'LIKE', "%$text%");
+                    });
+                }
+                return $query->whereHas('book', function ($q) use ($request, $text){
+                    return $q->where('name', 'LIKE', "%$text%");
+                });
+            })
+            ->select('id', 'wantedDate', 'wantedDuration', 'user_id', 'book_id')
+            ->with('user:id,fullName')
+            ->with('book:id,name')
+            ->simplePaginate();
+    }
 
 }
 
