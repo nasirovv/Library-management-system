@@ -4,13 +4,23 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Front\OrderRequest;
+use App\Http\Services\SearchService;
 use App\Models\Book;
 use App\Models\Order;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
 
-    public function order(OrderRequest $request){
+    public function index(Request $request){
+        $orders = (new SearchService())->orderSearchForUser($request);
+
+        return response()->json($orders, 200);
+    }
+
+    public function order(OrderRequest $request): JsonResponse
+    {
         if(Book::firstWhere('id', $request->bookId)->count <= 0){
             return response()->json('The books is over', 404);
         }

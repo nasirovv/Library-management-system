@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Routes
     Route::middleware('auth:user')->prefix('user')->group(function () {
         Route::post('order', [UserOrderController::class, 'order']);
+        Route::get('orders', [UserOrderController::class, 'index']);
     });
 
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
