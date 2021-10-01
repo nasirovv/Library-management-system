@@ -156,6 +156,7 @@ class SearchService
         $text = strtolower($request->input('searchText'));
 
         return Order::query()
+            ->where('user_id', auth()->guard('user')->user()->id)
             ->when($request->input('filter') === 'status', function ($query) use ($text){
                 return $query->whereHas('status', function ($q) use($text){
                     return $q->where('message', 'LIKE', "%$text%");
