@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\Librarian\UserController as LibrarianUserController;
 use App\Http\Controllers\Librarian\OrderController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
+use App\Http\Controllers\User\UserController as UserUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:user')->prefix('user')->group(function () {
         Route::post('order', [UserOrderController::class, 'order']);
         Route::get('orders', [UserOrderController::class, 'index']);
+        Route::patch('edit', [UserUserController::class, 'edit']);
     });
 
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {
