@@ -119,6 +119,7 @@ class SearchService
                 'status_id', 'librarian_id', 'givenDate', 'mustReturnDate', 'returnedDate')
             ->with('user:id,fullName')
             ->with('book:id,name')
+            ->with('status:id,message')
             ->with('librarian:id,fullName')
             ->simplePaginate();
     }
@@ -148,6 +149,7 @@ class SearchService
                 'status_id', 'givenDate', 'mustReturnDate', 'returnedDate')
             ->with('user:id,fullName')
             ->with('book:id,name')
+            ->with('status:id,message')
             ->simplePaginate();
     }
 
@@ -175,6 +177,7 @@ class SearchService
             ->select('id', 'book_id', 'wantedDate', 'wantedDuration',
                 'status_id', 'librarian_id', 'givenDate', 'mustReturnDate', 'returnedDate')
             ->with('book:id,name')
+            ->with('status:id,message')
             ->with('librarian:id,fullName')
             ->simplePaginate();
     }
