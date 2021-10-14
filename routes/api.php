@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('auth:user')->prefix('user')->group(function () {
         Route::post('order', [UserOrderController::class, 'order']);
         Route::get('orders', [UserOrderController::class, 'index']);
+        Route::get('librarians/{id}', [UserUserController::class, 'showLibrarian']);
         Route::patch('edit', [UserUserController::class, 'edit']);
     });
 

@@ -116,7 +116,7 @@ class SearchService
                 });
             })
             ->select('id', 'book_id', 'user_id', 'wantedDate', 'wantedDuration',
-                'status_id', 'librarian_id', 'givenDate', 'mustReturnDate', 'returnedDate')
+                'status_id', 'librarian_id', 'givenDate', 'mustReturnDate', 'returnedDate', 'created_at')
             ->with('user:id,fullName')
             ->with('book:id,name')
             ->with('status:id,message')
@@ -146,7 +146,7 @@ class SearchService
                 });
             })
             ->select('id', 'book_id', 'user_id', 'wantedDate', 'wantedDuration',
-                'status_id', 'givenDate', 'mustReturnDate', 'returnedDate')
+                'status_id', 'givenDate', 'mustReturnDate', 'returnedDate', 'created_at')
             ->with('user:id,fullName')
             ->with('book:id,name')
             ->with('status:id,message')
@@ -175,7 +175,7 @@ class SearchService
                 });
             })
             ->select('id', 'book_id', 'wantedDate', 'wantedDuration',
-                'status_id', 'librarian_id', 'givenDate', 'mustReturnDate', 'returnedDate')
+                'status_id', 'librarian_id', 'givenDate', 'mustReturnDate', 'returnedDate', 'created_at')
             ->with('book:id,name')
             ->with('status:id,message')
             ->with('librarian:id,fullName')
