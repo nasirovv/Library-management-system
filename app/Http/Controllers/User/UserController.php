@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Librarian;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -13,9 +14,9 @@ class UserController extends Controller
 
     }
 
-    public function showLibrarian(Request $request, $id)
+    public function showLibrarian(Librarian $librarian): JsonResponse
     {
-        $librarian = Librarian::findOrFail($id);
+        return response()->json($librarian, 200);
     }
 
 
