@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Librarian;
+use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,13 @@ class UserController extends Controller
 
     }
 
-    public function showLibrarian(Librarian $librarian): JsonResponse
+    public function showLibrarian($id): JsonResponse
     {
-        return response()->json($librarian, 200);
+//        $accepted = Order::query()->where(['librarian_id' => $id, 'status_id' => 3])->count();
+
+
+
+        return response()->json('', 200);
     }
 
 
