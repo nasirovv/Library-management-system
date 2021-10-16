@@ -7,6 +7,7 @@ use App\Models\Librarian;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -17,11 +18,30 @@ class UserController extends Controller
 
     public function showLibrarian($id): JsonResponse
     {
-//        $accepted = Order::query()->where(['librarian_id' => $id, 'status_id' => 3])->count();
+        $librarian = Librarian::query()
+            ->where('id', $id)
+            ->select('id', 'fullName')
+            ->with('orders', function ($query){
+                return $query->select('status_id', 'librarian_id', DB::raw('count(*) as count'))
+                    ->groupBy('status_id', 'librarian_id')
+                    ->with('status:id,message')
+                    ->get();
+            })
+            ->first();
 
 
+        $data = [
+            'id' => $librarian->id,
+            'fullName' => $librarian->fullName
+        ];
 
-        return response()->json('', 200);
+        foreach ($librarian->orders as $order){
+            $data += [
+                $order->status->message => $order->count
+            ];
+        }
+
+        return response()->json($data, 200);
     }
 
 
