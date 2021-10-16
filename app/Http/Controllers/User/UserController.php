@@ -34,12 +34,13 @@ class UserController extends Controller
             'id' => $librarian->id,
             'fullName' => $librarian->fullName,
             'image' => $librarian->image,
+            'onProcess' => 0,
+            'finished' => 0,
+            'denied' => 0,
         ];
 
         foreach ($librarian->orders as $order){
-            $data += [
-                $order->status->message => $order->count
-            ];
+                $data["{$order->status->message}"] = $order->count;
         }
 
         return response()->json($data, 200);
