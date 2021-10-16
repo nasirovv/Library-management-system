@@ -20,19 +20,20 @@ class UserController extends Controller
     {
         $librarian = Librarian::query()
             ->where('id', $id)
-            ->select('id', 'fullName')
+            ->select('id', 'fullName', 'image')
             ->with('orders', function ($query){
                 return $query->select('status_id', 'librarian_id', DB::raw('count(*) as count'))
                     ->groupBy('status_id', 'librarian_id')
                     ->with('status:id,message')
                     ->get();
             })
-            ->first();
+            ->firstOrFail();
 
 
         $data = [
             'id' => $librarian->id,
-            'fullName' => $librarian->fullName
+            'fullName' => $librarian->fullName,
+            'image' => $librarian->image,
         ];
 
         foreach ($librarian->orders as $order){
