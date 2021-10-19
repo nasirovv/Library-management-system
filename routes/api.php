@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('librarians/{librarian}', [UserUserController::class, 'showLibrarian']);
         Route::put('edit', [UserUserController::class, 'edit']);
         Route::put('edit', [UserUserController::class, 'editPassword']);
+        Route::patch('return-book', [UserUserController::class, 'returnBook']);
     });
 
     Route::middleware('auth:librarian')->prefix('librarian')->group(function () {

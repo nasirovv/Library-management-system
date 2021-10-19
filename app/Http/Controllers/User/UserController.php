@@ -3,24 +3,28 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Front\UserEditPasswordRequest;
+use App\Http\Requests\Front\UserEditRequest;
 use App\Models\Librarian;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
 
-    public function edit(Request $request): JsonResponse
+    public function edit(UserEditRequest $request): JsonResponse
     {
         User::query()->findOrFail(auth()->id())
             ->update($request->all());
         return response()->json('User updated successfully', 200);
     }
 
-    public function editPassword(Request $request): JsonResponse
+    public function editPassword(UserEditPasswordRequest $request): JsonResponse
     {
         $user = User::query()->findOrFail(auth()->id());
         if(!Hash::check($request->oldPassword, $user->password)){
@@ -65,5 +69,17 @@ class UserController extends Controller
         return response()->json($data, 200);
     }
 
+    public function returnBook(Request $request): JsonResponse
+    {
+        $order = Order::query()->where(['user_id'=> auth()->id(), 'id' => $request->orderId])->firstOrFail();
+        if(!$order->librarian_id || $order->returnedDate !== null){
+            return response()->json('Something went wrong', 401);
+        }
+        $order->update([
+            'returnedDate' => Carbon::now(),
+            'status_id' => 4
+        ]);
+        return response()->json('Book returned successfully', 200);
+    }
 
 }
