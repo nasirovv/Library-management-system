@@ -7,17 +7,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LibrarianRequest;
 use App\Http\Resources\Admin\LibrarianResource;
 use App\Models\Librarian;
+use Illuminate\Http\JsonResponse;
 
 class LibrarianController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
-        $librarians = LibrarianResource::collection(Librarian::all());
+        $librarians = Librarian::query()
+            ->select('id', 'fullName', 'username', 'image')
+            ->with('orders')
+            ->get();
 
         return response()->json($librarians, 200);
     }
 
-    public function store(LibrarianRequest $request)
+    public function store(LibrarianRequest $request): JsonResponse
     {
         $librarian = Librarian::create($request->validated());
         if($request->hasFile('image')){
@@ -27,13 +31,18 @@ class LibrarianController extends Controller
         return response()->json('Successfully added', 201);
     }
 
-    public function show(Librarian $librarian)
+    public function show($id): JsonResponse
     {
-        return response()->json(new LibrarianResource($librarian), 200);
+        $librarian = Librarian::query()
+            ->select('id', 'fullName', 'username', 'image')
+            ->with('orders')
+            ->firstOrFail();
+
+        return response()->json($librarian, 200);
     }
 
 
-    public function update(LibrarianRequest $request, $id)
+    public function update(LibrarianRequest $request, $id): JsonResponse
     {
         $librarian = Librarian::find($id);
         if (!$librarian){
@@ -50,11 +59,8 @@ class LibrarianController extends Controller
         return response()->json('Successfully updated', 200);
     }
 
-    public function destroy(Librarian $librarian)
+    public function destroy(Librarian $librarian): JsonResponse
     {
-        if (!$librarian){
-            return response()->json('Librarian not found', 404);
-        }
         $librarian->delete();
         return response()->json('Librarian successfully deleted', 200);
     }

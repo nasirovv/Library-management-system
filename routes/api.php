@@ -89,7 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Categories crud
         Route::apiResource('categories', CategoryController::class)->except('index');
         // Books crud
-        Route::apiResource('books', BookController::class)->except(['index', 'update']);
+        Route::apiResource('books', BookController::class)->except(['index', 'update', 'show']);
         Route::post('books/{id}', [BookController::class, 'update']);
 
     });
@@ -97,7 +97,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['auth:admin,librarian'])->group(function () {
         Route::get('users', [UserController::class, 'index']);
         Route::get('users/{id}', [UserController::class, 'show']);
-        Route::get('books/{id}', [BookController::class, 'show']);
     });
 
     // For all guards
@@ -107,6 +106,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('books', [BookController::class, 'index']);
+Route::get('books/{id}', [BookController::class, 'show']);
 
 
 

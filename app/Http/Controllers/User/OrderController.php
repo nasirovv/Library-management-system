@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
 
-    public function index(Request $request){
+    public function index(Request $request): JsonResponse
+    {
         $orders = (new SearchService())->orderSearchForUser($request);
 
         return response()->json($orders, 200);
@@ -21,10 +22,10 @@ class OrderController extends Controller
 
     public function order(OrderRequest $request): JsonResponse
     {
-        if(Book::firstWhere('id', $request->bookId)->count <= 0){
+        if(Book::query()->firstWhere('id', $request->bookId)->count <= 0){
             return response()->json('The books is over', 404);
         }
-        Order::create([
+        Order::query()->create([
             'book_id' => $request->bookId,
             'user_id' => auth()->id(),
             'wantedDate' => $request->wantedDate,

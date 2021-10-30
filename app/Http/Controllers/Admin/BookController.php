@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BookRequest;
 use App\Http\Services\SearchService;
 use App\Models\Book;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -18,12 +19,12 @@ class BookController extends Controller
         $this->service = $service;
     }
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         return response()->json($this->service->bookSearch($request));
-    }
+}
 
-    public function store(BookRequest $request)
+    public function store(BookRequest $request): JsonResponse
     {
         $book = Book::create([
             'name' => $request->name,
@@ -42,8 +43,9 @@ class BookController extends Controller
         return response()->json('Successfully added', 201);
     }
 
-    public function show($id){
-        $book = Book::where('id', $id)
+    public function show($id): JsonResponse
+    {
+        $book = Book::query()->where('id', $id)
             ->select('id', 'name', 'image', 'author', 'ISBN', 'publishedYear', 'description', 'count', 'originalCount')
             ->with('categories:id,name')
             ->firstOrFail();
@@ -51,7 +53,7 @@ class BookController extends Controller
     }
 
 
-    public function update(BookRequest $request, $id)
+    public function update(BookRequest $request, $id): JsonResponse
     {
         $book = Book::find($id);
         if (!$book){
@@ -74,7 +76,7 @@ class BookController extends Controller
         return response()->json('Successfully updated', 200);
     }
 
-    public function destroy(Book $book)
+    public function destroy(Book $book): JsonResponse
     {
         if (!$book){
             return response()->json('Book not found', 404);
